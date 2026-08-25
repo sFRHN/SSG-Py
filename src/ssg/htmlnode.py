@@ -19,8 +19,8 @@ class HTMLNode:
             return ""
 
         props_str_repr = ""
-        for key, val in self.props:
-            props_str_repr += f' {key}:"{val}"'
+        for key, val in self.props.items():
+            props_str_repr += f' {key}="{val}"'
         return props_str_repr
 
     def __eq__(self, other) -> bool:
