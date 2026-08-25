@@ -2,7 +2,7 @@ from ssg.htmlnode import HTMLNode
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag: str | None, value: str | None, props: dict | None = None):
+    def __init__(self, tag: str | None, value: str | None, props: dict[str, str] | None = None):
         super().__init__(tag, value, None, props)
 
 

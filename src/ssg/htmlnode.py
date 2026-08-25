@@ -4,12 +4,12 @@ class HTMLNode:
         tag: str | None = None,
         value: str | None = None,
         children: list[HTMLNode] | None = None,
-        props: dict | None = None,
+        props: dict[str, str] | None = None,
     ):
         self.tag: str | None = tag
         self.value: str | None = value
         self.children: list[HTMLNode] | None = children
-        self.props: dict | None = props
+        self.props: dict[str, str] | None = props
 
     def to_html(self):
         raise NotImplementedError("HTMLNode.to_html() not implmented yet")
