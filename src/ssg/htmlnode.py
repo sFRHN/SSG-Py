@@ -23,6 +23,14 @@ class HTMLNode:
             props_str_repr += f' {key}:"{val}"'
         return props_str_repr
 
+    def __eq__(self, other) -> bool:
+        return (
+            self.tag == other.tag
+            and self.value == other.value
+            and self.children == other.children
+            and self.props == other.props
+        )
+
     def __repr__(self) -> str:
         return f"""
         Tag: {self.tag}
