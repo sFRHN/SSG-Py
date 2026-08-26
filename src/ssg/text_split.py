@@ -1,4 +1,4 @@
-from ssg.markdown_extract import extract_markdown_images, extract_markdown_links
+from ssg.markdown_inline import extract_markdown_images, extract_markdown_links
 from ssg.text_node import TextNode, TextType
 
 
