@@ -1,5 +1,18 @@
-from ssg.textnode import TextNode, TextType
 from ssg.markdown_extract import extract_markdown_images, extract_markdown_links
+from ssg.textnode import TextNode, TextType
+
+
+def text_to_textnodes(text: str) -> list[TextNode]:
+    first_node = TextNode(text=text, text_type=TextType.TEXT)
+
+    all_nodes = [first_node]
+    all_nodes = split_nodes_image(all_nodes)
+    all_nodes = split_nodes_links(all_nodes)
+    all_nodes = split_nodes_delimiter(all_nodes, "**", TextType.BOLD)
+    all_nodes = split_nodes_delimiter(all_nodes, "_", TextType.ITALIC)
+    all_nodes = split_nodes_delimiter(all_nodes, "`", TextType.CODE)
+
+    return all_nodes
 
 
 def split_nodes_delimiter(

@@ -1,7 +1,12 @@
 import unittest
 
 from ssg.textnode import TextNode, TextType
-from ssg.textsplit import split_nodes_delimiter, split_nodes_image, split_nodes_links
+from ssg.textsplit import (
+    split_nodes_delimiter,
+    split_nodes_image,
+    split_nodes_links,
+    text_to_textnodes,
+)
 
 
 class TestSplitNodesDelimiter(unittest.TestCase):
@@ -331,3 +336,127 @@ class TestSplitNodesLink(unittest.TestCase):
                 TextNode("l", TextType.LINK, "x.com"),
             ],
         )
+
+
+class TestTextToTextNodes(unittest.TestCase):
+    def test_plain_text(self):
+        nodes = text_to_textnodes("This is plain text")
+        self.assertEqual(nodes, [TextNode("This is plain text", TextType.TEXT)])
+
+    def test_bold_only(self):
+        nodes = text_to_textnodes("**bold**")
+        self.assertEqual(nodes, [TextNode("bold", TextType.BOLD)])
+
+    def test_italic_only(self):
+        nodes = text_to_textnodes("_italic_")
+        self.assertEqual(nodes, [TextNode("italic", TextType.ITALIC)])
+
+    def test_code_only(self):
+        nodes = text_to_textnodes("`code`")
+        self.assertEqual(nodes, [TextNode("code", TextType.CODE)])
+
+    def test_bold_and_italic(self):
+        nodes = text_to_textnodes("**bold** and _italic_")
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("bold", TextType.BOLD),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+            ],
+        )
+
+    def test_italic_and_code(self):
+        nodes = text_to_textnodes("_italic_ and `code` together")
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("code", TextType.CODE),
+                TextNode(" together", TextType.TEXT),
+            ],
+        )
+
+    def test_image_only(self):
+        nodes = text_to_textnodes("![alt](https://img.com/a.png)")
+        self.assertEqual(
+            nodes, [TextNode("alt", TextType.IMAGE, "https://img.com/a.png")]
+        )
+
+    def test_link_only(self):
+        nodes = text_to_textnodes("[link](https://site.com)")
+        self.assertEqual(
+            nodes, [TextNode("link", TextType.LINK, "https://site.com")]
+        )
+
+    def test_image_and_link(self):
+        nodes = text_to_textnodes("![img](a.png) and [link](b.com)")
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("img", TextType.IMAGE, "a.png"),
+                TextNode(" and ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "b.com"),
+            ],
+        )
+
+    def test_url_with_underscores(self):
+        nodes = text_to_textnodes("![alt](https://x.com/a_b.png)")
+        self.assertEqual(
+            nodes, [TextNode("alt", TextType.IMAGE, "https://x.com/a_b.png")]
+        )
+
+    def test_full_markdown(self):
+        text = (
+            "This is **text** with an _italic_ word and a `code` block, "
+            "an ![image](img.png), and a [link](url.com)"
+        )
+        nodes = text_to_textnodes(text)
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code", TextType.CODE),
+                TextNode(" block, an ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "img.png"),
+                TextNode(", and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "url.com"),
+            ],
+        )
+
+    def test_adjacent_images(self):
+        nodes = text_to_textnodes("![a](x.png)![b](y.png)")
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("a", TextType.IMAGE, "x.png"),
+                TextNode("b", TextType.IMAGE, "y.png"),
+            ],
+        )
+
+    def test_adjacent_links(self):
+        nodes = text_to_textnodes("[a](x.com)[b](y.com)")
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("a", TextType.LINK, "x.com"),
+                TextNode("b", TextType.LINK, "y.com"),
+            ],
+        )
+
+    def test_empty_string(self):
+        nodes = text_to_textnodes("")
+        self.assertEqual(nodes, [])
+
+    def test_unclosed_bold_raises(self):
+        with self.assertRaises(ValueError):
+            text_to_textnodes("**unclosed")
+
+    def test_italic_inside_bold_stays_literal(self):
+        nodes = text_to_textnodes("**_bold_ inside**")
+        self.assertEqual(nodes, [TextNode("_bold_ inside", TextType.BOLD)])
