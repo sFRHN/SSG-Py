@@ -1,5 +1,5 @@
 from ssg.markdown_extract import extract_markdown_images, extract_markdown_links
-from ssg.textnode import TextNode, TextType
+from ssg.text_node import TextNode, TextType
 
 
 def text_to_textnodes(text: str) -> list[TextNode]:

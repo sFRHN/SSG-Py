@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ssg.leafnode import LeafNode
+from ssg.leaf_node import LeafNode
 
 
 class TextType(Enum):

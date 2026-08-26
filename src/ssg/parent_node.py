@@ -1,4 +1,4 @@
-from ssg.htmlnode import HTMLNode
+from ssg.html_node import HTMLNode
 
 
 class ParentNode(HTMLNode):
