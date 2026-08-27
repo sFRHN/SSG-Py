@@ -1,0 +1,248 @@
+:root {
+  --bg: #0d0f0a;
+  --bg-alt: #161a12;
+  --panel: #1d2316;
+  --green: #6b8e23;
+  --green-bright: #9acd32;
+  --amber: #e8a33d;
+  --amber-dim: #c9892e;
+  --text: #d6d3c4;
+  --text-dim: #9aa18c;
+  --line: #3a4426;
+  --alert: #d4b84a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(107, 142, 35, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(107, 142, 35, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  color: var(--text);
+  font-family: "Courier New", "Lucida Console", monospace;
+  line-height: 1.7;
+  margin: 0;
+  padding: 24px 16px;
+}
+
+#content {
+  max-width: 900px;
+  min-height: calc(100vh - 48px);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 24px;
+  background-color: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+article {
+  flex: 1;
+}
+
+header.site-header {
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.site-title {
+  color: var(--green-bright);
+  font-size: 1.1em;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.site-title a {
+  border-bottom: none;
+  color: var(--green-bright);
+}
+
+.site-sub {
+  color: var(--text-dim);
+  font-size: 0.85em;
+  letter-spacing: 2px;
+  margin: 6px 0 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--amber);
+  font-family: "Arial Black", "Franklin Gothic Medium", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 28px;
+  margin-bottom: 14px;
+}
+
+h1 {
+  font-size: 2.2em;
+  color: var(--amber);
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+a {
+  color: var(--green-bright);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--green);
+}
+
+a:hover {
+  color: var(--amber);
+  border-bottom-style: solid;
+}
+
+ul,
+ol {
+  padding-left: 26px;
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+blockquote {
+  border-left: 4px solid var(--green);
+  background-color: var(--panel);
+  padding: 12px 18px;
+  margin: 16px 0;
+  color: var(--text-dim);
+}
+
+hr {
+  border: none;
+  border-top: 2px solid var(--line);
+  margin: 28px 0;
+}
+
+footer {
+  border-top: 2px solid var(--line);
+  margin-top: auto;
+  padding-top: 16px;
+  color: var(--text-dim);
+  font-size: 0.8em;
+  letter-spacing: 1px;
+}
+
+code {
+  background-color: var(--panel);
+  border-radius: 4px;
+  color: var(--amber);
+  padding: 0.2em 0.4em;
+  font-family: "Courier New", monospace;
+}
+
+pre code {
+  padding: 0;
+}
+
+pre {
+  background-color: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1em;
+  overflow: auto;
+}
+
+/* ------------------------------------------------ */
+/* Game pages: two-column layout                      */
+/* Only applies to pages that contain a cover image   */
+/* ------------------------------------------------ */
+article:has(> div > p:has(> img)) > div {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  column-gap: 40px;
+  align-items: start;
+  grid-auto-flow: dense;
+}
+
+article:has(> div > p:has(> img)) > div > h1 {
+  grid-column: 1 / -1;
+}
+
+article:has(> div > p:has(> img)) > div > p:has(> img) {
+  grid-column: 1;
+  margin: 0;
+}
+
+article:has(> div > p:has(> img)) > div > p:has(> img) img {
+  width: 100%;
+  border: 3px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+}
+
+article:has(> div > p:has(> img)) > div > p:has(.playtime) {
+  grid-column: 1;
+  margin: 14px 0 0;
+}
+
+article:has(> div > p:has(> img)) > div > p:not(:has(> img)):not(:has(.playtime)) {
+  grid-column: 2;
+  margin-top: 0;
+}
+
+/* Playtime badge */
+.playtime {
+  display: block;
+  background-color: var(--amber);
+  color: var(--bg);
+  font-family: "Arial Black", "Franklin Gothic Medium", sans-serif;
+  font-size: 1.6em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 2px solid #fff2d7;
+  box-shadow:
+    0 0 0 2px var(--amber),
+    0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.playtime::before {
+  content: "PLAYTIME";
+  display: block;
+  font-size: 0.55em;
+  letter-spacing: 4px;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 700px) {
+  body {
+    padding: 12px;
+  }
+  #content {
+    padding: 16px;
+  }
+  article:has(> div > p:has(> img)) > div {
+    display: block;
+  }
+}
