@@ -1,10 +1,10 @@
 from ssg.copy_files import copy_files
-from ssg.generate_page import generate_page
+from ssg.generate_page import generate_pages_recursive
 
 
 def main():
     copy_files("static", "public")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 if __name__ == "__main__":
     main()
