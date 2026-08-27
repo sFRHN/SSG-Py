@@ -7,10 +7,10 @@ class ParentNode(HTMLNode):
         super().__init__(tag, None, children, props)
 
     def to_html(self) -> str:
-        if not self.tag:
+        if self.tag is None:
             raise ValueError("ParentNode has no tag")
 
-        if not self.children:
+        if self.children is None:
             raise ValueError("ParentNode has no children")
 
         chilldren_str = ""
