@@ -1,5 +1,8 @@
+from ssg.copy_files import copy_files
+
+
 def main():
-    print("Hello from ssg-py!")
+    copy_files("static", "public")
 
 
 if __name__ == "__main__":
