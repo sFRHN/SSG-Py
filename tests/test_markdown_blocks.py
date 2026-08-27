@@ -1,6 +1,11 @@
 import unittest
 
-from ssg.markdown_blocks import BlockType, block_to_blocktype, markdown_to_blocks
+from ssg.markdown_blocks import (
+    BlockType,
+    block_to_blocktype,
+    extract_title,
+    markdown_to_blocks,
+)
 
 
 class TestMarkdownToBlocks(unittest.TestCase):
@@ -244,3 +249,34 @@ class TestBlockToBlockType(unittest.TestCase):
     def test_ordered_list_non_numeric_start(self):
         block = "a. one"
         self.assertEqual(block_to_blocktype(block), BlockType.PARAGRAPH)
+
+class TestExtractTitle(unittest.TestCase):
+
+    def test_extract_title_basic(self):
+        md = "# Hello World"
+        self.assertEqual(extract_title(md), "Hello World")
+
+    def test_extract_title_from_full_document(self):
+        md = "# My Title\n\nSome paragraph text here.\n\nAnother paragraph."
+        self.assertEqual(extract_title(md), "My Title")
+
+    def test_extract_title_ignores_lower_headings(self):
+        md = "## Not the title\n\n# The Actual Title"
+        self.assertEqual(extract_title(md), "The Actual Title")
+
+    def test_extract_title_strips_surrounding_whitespace(self):
+        md = "#   Spaced Title   "
+        self.assertEqual(extract_title(md), "Spaced Title")
+
+    def test_extract_title_from_multiline_heading(self):
+        md = "# Multi Line\nTitle"
+        self.assertEqual(extract_title(md), "Multi Line\nTitle")
+
+    def test_extract_title_missing_raises(self):
+        md = "## No h1 here\n\nJust a paragraph."
+        with self.assertRaises(ValueError):
+            extract_title(md)
+
+    def test_extract_title_empty_string_raises(self):
+        with self.assertRaises(ValueError):
+            extract_title("")

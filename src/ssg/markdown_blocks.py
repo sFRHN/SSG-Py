@@ -41,3 +41,13 @@ def block_to_blocktype(block: str) -> BlockType:
         return BlockType.ORDERED_LIST
 
     return BlockType.PARAGRAPH
+
+def extract_title(markdown: str) -> str:
+    
+    all_blocks = markdown_to_blocks(markdown)
+
+    for block in all_blocks:
+        if block.startswith("# "):
+            return block[2:].strip()
+
+    raise ValueError("H1 Header not found in the document")
