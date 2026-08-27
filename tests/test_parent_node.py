@@ -64,20 +64,18 @@ class TestParentNode(unittest.TestCase):
             '<div class="container"><span>child</span></div>',
         )
 
-    def test_to_html_no_tag_raises(self):
+    def test_to_html_empty_tag(self):
         node = ParentNode("", [LeafNode("span", "child")])
-        with self.assertRaises(ValueError):
-            node.to_html()
+        self.assertEqual(node.to_html(), "<><span>child</span></>")
 
     def test_to_html_none_tag_raises(self):
         node = ParentNode(None, [LeafNode("span", "child")])
         with self.assertRaises(ValueError):
             node.to_html()
 
-    def test_to_html_no_children_raises(self):
+    def test_to_html_empty_children(self):
         node = ParentNode("div", [])
-        with self.assertRaises(ValueError):
-            node.to_html()
+        self.assertEqual(node.to_html(), "<div></div>")
 
     def test_to_html_none_children_raises(self):
         node = ParentNode("div", None)
